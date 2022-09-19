@@ -27,7 +27,7 @@ jobs:
           echo 'rm -f health.json'
 
       - name: Check Send Email
-        run: echo '是否需要发送告警邮件：' $$sendFlag
+        run: echo '是否需要发送告警邮件：' $sendFlag
 
       - name: 'Send Email'
         if: $sendFlag==true
