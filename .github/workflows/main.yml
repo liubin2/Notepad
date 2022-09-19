@@ -40,6 +40,6 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 俱乐部告警
-          body: file://health.json
+          body: '服务异常告警'
           to: ${{ secrets.MAIL_TO_USER }}
           from: 875256050@qq.com
