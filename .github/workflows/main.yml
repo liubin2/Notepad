@@ -47,4 +47,4 @@ jobs:
           
       - name: 'Not Send Email'
         if: $sendFlag == false
-          run: echo '请求失败，无需发送邮件'
+        run: echo '请求失败，无需发送邮件'
