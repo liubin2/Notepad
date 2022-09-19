@@ -28,17 +28,9 @@ jobs:
           echo 'rm -f health.json'
 
       - name: 'Send Email'
-        if: ${{ env.sendFlag == true }}
-        uses: dawidd6/action-send-mail@master
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 俱乐部告警
-          body: file://health.json
-          to: ${{ secrets.MAIL_TO_USER }}
-          from: 875256050@qq.com
-
-          if: ${{ env.sendFlag == false }}
-          run: echo '请求失败，无需发送邮件'
+        if: ${{env.sendFlag==true}}
+        run: echo '发送邮件'
+        
+      - name: 'not send Email'
+        if: ${{env.sendFlag==false}}
+        run: echo '请求失败，无需发送邮件'
