@@ -27,24 +27,14 @@ jobs:
           fi
           rm -f health.json
           echo 'rm -f health.json'
-          echo '变量：' ${{steps.tut.outputs.sendFlag}}
+
+      - name: Check Send Email
+        run: echo '是否需要发送告警邮件：' $sendFlag
+
       - name: 'Send Email'
         run: |
           echo '1:'$sendFlag
         
       - name: 'send Email'
-        if: $sendFlag == true
-        uses: dawidd6/action-send-mail@master
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 俱乐部告警
-          body: file://health.json
-          to: ${{ secrets.MAIL_TO_USER }}
-          from: 875256050@qq.com
-
-      - name: 'Not Send Email'
-        if: $sendFlag == false
-        run: echo '请求失败，无需发送邮件'
+        if: ${{env.sendFlag}} == true
+        run: echo '发送邮件'
