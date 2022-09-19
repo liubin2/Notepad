@@ -20,9 +20,9 @@ jobs:
           code=$(cat health.json | sed 's/,/\n/' | grep 'code' | sed 's/:/\n/'| sed '1d'| sed 's/"//g')
           echo 'code:' $code
           if test $code==0;then
-              echo sendFlag=true >> $GITHUB_ENV
+              echo "sendFlag=true" >> $GITHUB_ENV
           else
-              echo sendFlag=false >> $GITHUB_ENV
+              echo "sendFlag=false" >> $GITHUB_ENV
           fi
           rm -f health.json
           echo 'rm -f health.json'
