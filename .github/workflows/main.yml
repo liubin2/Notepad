@@ -31,10 +31,8 @@ jobs:
 
       - name: 'Send Email'
         run: |
-           echo '0:'${{steps.tut.outputs.sendFlag}}
            echo '1:'$sendFlag
-           echo '2:'${{ env.sendFlag}}
         
-      - name: 'not send Email'
-        if: ${{env.sendFlag==true}}
-        run: echo '请求失败，无需发送邮件'
+      - name: 'send Email'
+        if: ${{env.sendFlag}} == true
+        run: echo '发送邮件'
