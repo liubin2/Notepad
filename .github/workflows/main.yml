@@ -26,7 +26,7 @@ jobs:
           fi
           rm -f health.json
           echo 'rm -f health.json'
-          echo ${{env.sendFlag}}
+          echo '变量：' ${{env.sendFlag}}
 
       - name: 'Send Email'
         if: ${{env.sendFlag==true}}
