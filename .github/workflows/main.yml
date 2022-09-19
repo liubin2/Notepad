@@ -5,29 +5,30 @@ on:
     - cron: '0/1 * * * *'
   
   workflow_dispatch:
-
+  
 jobs:
   health-check:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout Code'
+      - name: 'Checkout Codes'
         uses: actions/checkout@v2
-
-#       - name: 'Execute check.sh'
-#         run: bash $GITHUB_WORKSPACE/.github/workflows/check.sh
 
       - name: 'Health Check'
         run: |
           curl https://www.fansmeta.io/api/health/check -o health.json
+          cat health.json
           code=$(cat health.json | sed 's/,/\n/' | grep 'code' | sed 's/:/\n/'| sed '1d'| sed 's/"//g')
-          echo $code
+          echo 'code:' $code
           if test $code==0;then
-              echo 111
+              echo sendFlag=true >> $GITHUB_ENV
           else
-              echo 2222
+              echo sendFlag=false >> $GITHUB_ENV
           fi
+          rm -f health.json
+          echo 'rm -f health.json'
 
       - name: 'Send Email'
+        if: ${{ env.sendFlag == true }}
         uses: dawidd6/action-send-mail@master
         with:
           server_address: smtp.qq.com
@@ -35,6 +36,9 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 俱乐部告警
-          body: file://check.json
-          to: 875256050@qq.com
+          body: file://health.json
+          to: ${{ secrets.MAIL_TO_USER }}
           from: 875256050@qq.com
+
+          if: ${{ env.sendFlag == false }}
+          run: echo '请求失败，无需发送邮件'
