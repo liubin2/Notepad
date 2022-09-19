@@ -3,9 +3,8 @@ name: Health Check
 on:
   schedule:
     - cron: '0/1 * * * *'
-  
   workflow_dispatch:
-  
+
 jobs:
   health-check:
     runs-on: ubuntu-latest
@@ -14,26 +13,24 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 'Health Check'
-        id: tut
         run: |
           curl https://www.fansmeta.io/api/health/check -o health.json
           cat health.json
           code=$(cat health.json | sed 's/,/\n/' | grep 'code' | sed 's/:/\n/'| sed '1d'| sed 's/"//g')
           echo 'code:' $code
           if test $code==0;then
-              echo "sendFlag=true" >>  $GITHUB_ENV
+              echo sendFlag=true >> $GITHUB_ENV
           else
-              echo "sendFlag=false" >> $GITHUB_ENV
+              echo sendFlag=false >> $GITHUB_ENV
           fi
           rm -f health.json
           echo 'rm -f health.json'
-          echo '变量：' ${{steps.tut.outputs.sendFlag}}
 
       - name: Check Send Email
         run: echo '是否需要发送告警邮件：' $$sendFlag
-          
+
       - name: 'Send Email'
-        if: $sendFlag == true
+        if: $sendFlag==true
         uses: dawidd6/action-send-mail@master
         with:
           server_address: smtp.qq.com
@@ -44,7 +41,8 @@ jobs:
           body: file://health.json
           to: ${{ secrets.MAIL_TO_USER }}
           from: 875256050@qq.com
-          
+
       - name: 'Not Send Email'
-        if: $sendFlag == false
+        if: $sendFlag==false
         run: echo '请求失败，无需发送邮件'
+
