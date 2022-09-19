@@ -30,11 +30,16 @@ jobs:
 
       - name: Check Send Email
         run: echo '是否需要发送告警邮件：' $sendFlag
-
-      - name: 'Send Email'
-        run: |
-          echo '1:'$sendFlag
         
       - name: 'send Email'
         if: ${{env.sendFlag}} == true
-        run: echo '发送邮件'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: 俱乐部告警
+          body: file://health.json
+          to: ${{ secrets.MAIL_TO_USER }}
+          from: 875256050@qq.com
