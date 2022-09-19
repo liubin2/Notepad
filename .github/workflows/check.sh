@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 
 echo 'excute health check shell'
 
