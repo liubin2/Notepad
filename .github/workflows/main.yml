@@ -26,4 +26,4 @@ jobs:
           subject: 俱乐部告警
           body: file://check.json
           to: 875256050@qq.com
-          form: 875256050@qq.com
+          from: 875256050@qq.com
