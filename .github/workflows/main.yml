@@ -13,8 +13,19 @@ jobs:
       - name: 'Checkout Code'
         uses: actions/checkout@v2
 
-      - name: 'Execute check.sh'
-        run: bash $GITHUB_WORKSPACE/.github/workflows/check.sh
+#       - name: 'Execute check.sh'
+#         run: bash $GITHUB_WORKSPACE/.github/workflows/check.sh
+
+      - name: 'Health Check'
+        run: |
+          curl https://www.fansmeta.io/api/health/check -o health.json
+          code=$(cat health.json | sed 's/,/\n/' | grep 'code' | sed 's/:/\n/'| sed '1d'| sed 's/"//g')
+          echo $code
+          if test $code==0;then
+              echo 111
+          else
+              echo 2222
+          fi
 
       - name: 'Send Email'
         uses: dawidd6/action-send-mail@master
