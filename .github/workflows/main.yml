@@ -8,13 +8,13 @@ on:
 
 jobs:
   health-check:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - name: 'Checkout Code'
-        uses: action/checkout@v2
+        uses: actions/checkout@v2
 
       - name: 'Execute check.sh'
-        run: ./check.sh
+        run: bash ./check.sh
 
       - name: 'Send Email'
         uses: dawidd6/action-send-mail@master
