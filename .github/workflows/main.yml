@@ -1,0 +1,18 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: '0 0/5 * * *'
+    
+jobs:
+  test-schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+#       - name: Run a multi-line script
+#         run: |
+#           echo Add other actions to build,
+#           echo test, and deploy your project.
