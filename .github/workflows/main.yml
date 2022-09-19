@@ -1,13 +1,28 @@
 name: Health Check
+
 on:
   schedule:
-    - cron: '0/5 * * * *'
-  
-  workflow_dispatch:
-    
+    - cron: '0/1 * * * *'
+
 jobs:
-  test-schedule:
-    runs-on: ubuntu-latest
+  health-check:
+    runs-on: ubuntu-lastest
     steps:
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: 'Checkout Code'
+        uses: action/checkout@v2
+
+      - name: 'Execute check.sh'
+        run: ./check.sh
+
+      - name: 'Send Email'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: 俱乐部告警
+          body: file://check.json
+          to: 875256050@qq.com
+          form: github action
+          content_type: text/json
